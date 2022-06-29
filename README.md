@@ -43,7 +43,6 @@ This makes it easy to copy intermediate and final results in whatever base repre
 	operations:
 	  [ 12 + 4 ] == hex: 0x10  bin: 0b10000  dec: 16
 	  [ 16 - 10 ] == hex: 0x6  bin: 0b110  dec: 6
-	>
 
 I don't know what happens with floating point numbers or negative numbers... I consider the program behavior to be "undefined". You can not input them, but they can happen as a result of evaluation.
 
@@ -67,7 +66,7 @@ Supported operators are "-", "+", "/" and "\*". As mentioned, beware of making n
 
 The input string is scanned. Anything matching one of the numbers is converted into "decimal" (in Perl, a string basically) and pushed onto the "values" stack. Any operators are pushed onto the "ops" stack. For each operator we shift two values from the values stack, perform the operation and put the result back on the values stack.
 
-After a line of input is evaluated, the values stack still contains the result of the previous operation. This means you can do this:
+Internally, the result of the last evaluation is stored in a variable that can be accessed via the "#" symbol, for example:
 
 	> 10 + 20
 	values:
@@ -76,7 +75,7 @@ After a line of input is evaluated, the values stack still contains the result o
 
 	operations:
 	  [ 10 + 20 ] == hex: 0x1e  bin: 0b11110  dec: 30
-	> + 50
+	> # + 50
 	values:
 	  hex: 0x1e  bin: 0b11110  dec: 30
 	  hex: 0x32  bin: 0b110010  dec: 50
@@ -84,7 +83,7 @@ After a line of input is evaluated, the values stack still contains the result o
 	operations:
 	  [ 30 + 50 ] == hex: 0x50  bin: 0b1010000  dec: 80
 
-Actually, you can even do tricks like this:
+If there are no operators, the values stack is still populated. This means you can do tricks like this:
 
 	> 10
 	values:
@@ -98,6 +97,9 @@ Actually, you can even do tricks like this:
 	  hex: 0xa  bin: 0b1010  dec: 10
 	  hex: 0x14  bin: 0b10100  dec: 20
 	  hex: 0x1e  bin: 0b11110  dec: 30
+
+Values stack now contains 3 values. We can add the first two:
+
 	> +
 	values:
 	  hex: 0xa  bin: 0b1010  dec: 10
@@ -106,12 +108,35 @@ Actually, you can even do tricks like this:
 
 	operations:
 	  [ 10 + 20 ] == hex: 0x1e  bin: 0b11110  dec: 30
-	> +
+
+The values stack now contains just 1 value (30) but "#" contains the other 30, so we can add them:
+
+	> # +
 	values:
 	  hex: 0x1e  bin: 0b11110  dec: 30
 	  hex: 0x1e  bin: 0b11110  dec: 30
 
 	operations:
 	  [ 30 + 30 ] == hex: 0x3c  bin: 0b111100  dec: 60
+
+You can square two numbers in a roundabout way:
+
+	> 5 + 5
+	values:
+	  hex: 0x5  bin: 0b101  dec: 5
+	  hex: 0x5  bin: 0b101  dec: 5
+
+	operations:
+	  [ 5 + 5 ] == hex: 0xa  bin: 0b1010  dec: 10
+
+Values stack is empty, and "#" contains 10:
+
+	> # * #
+	values:
+	  hex: 0xa  bin: 0b1010  dec: 10
+	  hex: 0xa  bin: 0b1010  dec: 10
+
+	operations:
+	  [ 10 * 10 ] == hex: 0x64  bin: 0b1100100  dec: 100
 
 If you get in a bind you can enter "r" or "R" or "c" or "C" to completely wipe the values and operations stacks (the first character in the line just needs to be and "r" in upper or lower case, so "Rabbit" also resets, as does "roundhousekick", as does "Chicken").

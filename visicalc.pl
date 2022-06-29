@@ -5,6 +5,7 @@ use warnings;
 
 my @VALUES;
 my @OPS;
+my $RESULT;
 
 while (1) {
     print "> ";
@@ -17,10 +18,19 @@ sub evaluate {
     if ($input =~ /^[rc]/i) {
         @VALUES = ();
         @OPS = ();
+        $RESULT = undef;
         return;
     }
     my @tokens = split(/\s+/, $input);
     for my $token (@tokens) {
+        if ($token eq "#") {
+            if (!defined $RESULT) {
+                printf("ERR: There is no previous result\n");
+                return;
+            }
+            push @VALUES, $RESULT if defined $RESULT;
+            next;
+        }
         if ($token =~ /^0x/) {
             push @VALUES, oct($token);
             next;
@@ -76,6 +86,7 @@ sub evaluate {
         print_value($result);
         unshift @VALUES, $result;
     }
+    $RESULT = shift @VALUES;
 }
 
 sub print_value {
