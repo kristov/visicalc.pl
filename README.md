@@ -4,9 +4,9 @@ A simple calculator where you can mix bin, hex and dec values in expressions. Do
 
 *DISCLAIMER*: I put zero thought into the name - at the time I was watching a nice video about how [VisiCalc](https://en.wikipedia.org/wiki/VisiCalc) came to be, so the name was in my mind. I like the name because it reminds me of the awesome history of computing, "citizen programming" and how the spreadsheet evolved into the ultimate "No Code" software that it is today. I hope it's plainly obvious that this Perl script has absolutely nothing to do with VisiCalc or spreadsheets in general. It is not an attempt to score higher in searches or anything like that. If it offends thee I am sorry. Read up about the amazing work of [Dan Bricklin](https://en.wikipedia.org/wiki/Dan_Bricklin) and [Bob Frankston](https://en.wikipedia.org/wiki/Bob_Frankston) in revolutionizing the world with VisiCalc.
 
-This script came about because I was doing assembly programming, and I needed to be able to switch freely between binary, hexidecimal and decimal. I was using multiple browser tabs pointing to the awesome tools at [www.rapidtables.com][https://www.rapidtables.com], but I decided I wanted something more local. I could not find any decent GUI calculator that let me freely mix numbers expressed in different bases, nor one that would conveniently give me a result in all bases. So I spent all of an hour writing this.
+This script came about because I was doing assembly programming, and I needed to be able to switch freely between binary, hexadecimal and decimal. I was using multiple browser tabs pointing to the awesome tools at [www.rapidtables.com](https://www.rapidtables.com), but I decided I wanted something more local. I could not find any decent GUI calculator that let me freely mix numbers expressed in different bases, nor one that would conveniently give me a result in all bases. So I spent all of an hour writing this.
 
-When you run the program it presents a prompt "> ". You type in an expression and hit enter to evaluate it. The expression is in "infix" notation (eg: "3 + 1" not "+ 3 1"). There must always be one less operator than there are numbers. The evaluation proceeds from left to right, picking up an operator-number pair and performing that operation on the preceeding result (or the first number) and the number. For example:
+When you run the program it presents a prompt "> ". You type in an expression and hit enter to evaluate it. The expression is in "infix" notation (eg: "3 + 1" not "+ 3 1"). There must always be one less operator than there are numbers. The evaluation proceeds from left to right, picking up an operator-number pair and performing that operation on the preceding result (or the first number) and the number. For example:
 
     1 + 3 - 2 + 5
 
@@ -32,7 +32,7 @@ It then prints each step in the evaluation as a list of operations, showing the 
 	operations:
 	  [ 10 + 20 ] == hex: 0x1e  bin: 0b11110  dec: 30
 
-This makes it easy to copy intermediate and final results in whatever base representation you need. The most important feature for me was being able to feely mix different formats in input:
+This makes it easy to copy intermediate and final results in whatever base representation you need. The most important feature for me was being able to freely mix different formats in input:
 
 	> 12 + 0b0100 - 0x0a
 	values:
@@ -45,7 +45,7 @@ This makes it easy to copy intermediate and final results in whatever base repre
 	  [ 16 - 10 ] == hex: 0x6  bin: 0b110  dec: 6
 	>
 
-I don't know what happens with floating point numbers or negative numbers... I consider the program behaviour to be "undefined". You can not input them, but they can happen as a result of evaluation.
+I don't know what happens with floating point numbers or negative numbers... I consider the program behavior to be "undefined". You can not input them, but they can happen as a result of evaluation.
 
 ## Input formats
 
@@ -53,15 +53,15 @@ The following input formats are supported:
 
     Example     Type            Description
 
-    0xaF01      Hexidecimal     Anything beginning "0x" is hex
-    $aF01       Hexidecimal     Numbers and letters beginning "$" is hex
+    0xaF01      Hexadecimal     Anything beginning "0x" is hex
+    $aF01       Hexadecimal     Numbers and letters beginning "$" is hex
     0b0101      Binary          Ones and zeros beginning "0b" is binary
     b0101       Binary          Ones and zeros beginning "b" is binary
     0101b       Binary          Ones and zeros ending in "b" is binary
     %0101       Binary          Ones and zeros beginning "%" is binary
     123         Decimal         If only numbers then decimal
 
-Supported operators are "-", "+", "/" and "\*". As mentioned, beware of making negative numbers or floating point numbers - undefined behaviour!
+Supported operators are "-", "+", "/" and "\*". As mentioned, beware of making negative numbers or floating point numbers - undefined behavior!
 
 ## Evaluation
 
